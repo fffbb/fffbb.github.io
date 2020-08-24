@@ -4,9 +4,12 @@
 </head>
 <body>
 "Hello World"
-<button id="start-btn">Start</button>
-<button id="stop-btn">Stop</button>
-<div id="result-div"></div>
+<div id="btns">
+  <button v-on:click="startRecognition">Start</button>
+  <button v-on:click="endRecognition">Stop</button>
+</div>
+<div id="result-div" v-html="transcript"></div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="speechrecog.js"></script>
 </body>
 </html>
