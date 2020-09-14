@@ -5,6 +5,7 @@
       <button v-on:click="stopRecognition">Stop</button>
     </div>
     <div v-html="transcript"></div>
+    <div v-html="interimscript" style="color:#ddd;"></div>
   </div>
 </template>
 
@@ -16,12 +17,14 @@ export default {
   },
   data: function() {
     return {
-      transcript: ""
+      transcript: "",
+      interimscript: ""
     }
   },
   created: function() {
     this.recognition = new window.webkitSpeechRecognition();
     this.recognition.lang = 'ja-JP';
+    this.recognition.interimResults = true;
     this.recognition.continuous = true;
     this.recognition.onresult = (event) => {
       let finalTranscript = '';
@@ -29,9 +32,14 @@ export default {
         const transcript = event.results[i][0].transcript;
         if (event.results[i].isFinal) {
           finalTranscript += transcript + ' ';
+          this.interimscript = '';
+        } else {
+          this.interimscript = transcript;
         }
       }
-      this.transcript += '<br/>' + finalTranscript;
+      if (finalTranscript !== "") {
+        this.transcript += finalTranscript + '<br/>';
+      }
     }
   },
   methods: {
