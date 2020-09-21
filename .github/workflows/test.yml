@@ -22,6 +22,24 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+
+      - name: npm install
+        run: npm ci
+
+      - name: generate
+        run: npm run build
+
+      - name: deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: master
+          publish_dir: ./docs
+
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Hello, world! ... and Vue!
